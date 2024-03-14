@@ -1,13 +1,12 @@
-const apiKey='c17a5ff0a72845cebbda04da64f30606'
-const blogContainer=document.getElementById("blog-container");
+const apiKey='c17a5ff0a72845cebbda04da64f30606';
 
+const blogContainer = document.getElementById('blog-container');
 
 async function fetchRandomNews(){
     try{
-        const apiUrl=`https://newsapi.org/v2/everything?q=tesla&sortBy=publishedAt&pageSize=10&apiKey=${apiKey}`
+        const apiUrl=`https://newsapi.org/v2/everything?q=tesla&sortBy=publishedAt&pageSize=60&apiKey=${apiKey}`;
        const response= await fetch(apiUrl)
        const data=await response.json()
-       console.log(data)
        return data.articles
     }
     catch(error){
@@ -17,13 +16,13 @@ async function fetchRandomNews(){
 }
 
 function displayBlogs(articles){
-    // blogContainer.innerHTML="";
+   blogContainer.innerHTML= ""
+    console.log("ARTICLES ",articles)
     articles.forEach(element => {
         const blogCard=document.createElement("div")
         blogCard.classList.add("blog-card")
-        console.log("element ::: ",element.title)
-        console.log("before creating element")
         const img=document.createElement("img")
+        console.log("image ",img)
         img.src=element.urlToImage
         img.alt=element.title
         const title=document.createElement("h2")
@@ -35,12 +34,12 @@ function displayBlogs(articles){
         blogCard.appendChild(description);
         blogContainer.appendChild(blogCard);
     });
-
 }
 
 (async ()=> {
     try{
        const articles= await fetchRandomNews()
+       console.log("in main ",articles)
        displayBlogs(articles);
     }
     catch(error){
