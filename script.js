@@ -1,10 +1,12 @@
 const apiKey='c17a5ff0a72845cebbda04da64f30606';
 
 const blogContainer = document.getElementById('blog-container');
+const searchField=document.getElementById("search-input");
+const searchButton=document.getElementById("search-button");
 
 async function fetchRandomNews(){
     try{
-        const apiUrl=`https://newsapi.org/v2/everything?q=tesla&sortBy=publishedAt&pageSize=60&apiKey=${apiKey}`;
+        const apiUrl=`https://newsapi.org/v2/top-headlines?sources=bbc-news&sortBy=publishedAt&pageSize=10&apiKey=${apiKey}`;
        const response= await fetch(apiUrl)
        const data=await response.json()
        return data.articles
@@ -12,6 +14,33 @@ async function fetchRandomNews(){
     catch(error){
         console.log("Error fetching Random news ",error);
         return []
+    }
+}
+
+searchButton.addEventListener("click",async () =>{
+    const query=searchField.value.trim()
+    if(query!=""){
+        try{
+            const articles=await fetchNewsQuery(query)
+            displayBlogs(articles);
+        }
+        catch(error){
+            console.log("error fetching news for the searched type")
+        }
+    }
+})
+
+async function fetchNewsQuery(query){
+    try{
+        const apiUrl=`https://newsapi.org/v2/everything?q=${query}&sortBy=publishedAt&pageSize=10&apiKey=${apiKey}`;
+        const response= await fetch(apiUrl)
+       const data=await response.json()
+       return data.articles
+
+    }
+    catch(error){
+        console.log("Error fetching news for ",query)
+        return [];
     }
 }
 
@@ -26,12 +55,17 @@ function displayBlogs(articles){
         img.src=element.urlToImage
         img.alt=element.title
         const title=document.createElement("h2")
-        title.textContent=element.title
+        const truncatedTitle=element.title.length>30 ? element.title.slice(0,30)+"..." : element.title
+         title.textContent=truncatedTitle
         const description=document.createElement("p")
-        description.textContent=element.description
+        const truncatedDescription=element.description.length>140 ? element.description.slice(0,140)+"..." : element.description
+        description.textContent=truncatedDescription
         blogCard.appendChild(img);
         blogCard.appendChild(title);
         blogCard.appendChild(description);
+        blogCard.addEventListener("click",() =>{
+            window.open(element.url,"_blank");
+        })
         blogContainer.appendChild(blogCard);
     });
 }
