@@ -60,11 +60,11 @@ nav{
     border-radius: 10px;
     cursor: pointer;
     padding: 1rem;
-    border-color: red;
+    border-color: black;
     margin: 10px;
 }
 .blog-card:hover{
-    background-color: aqua;
+    background-color: #e6ebef;
     box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
 }
 
@@ -78,8 +78,8 @@ nav{
 
 .blog-card h2{
     color: #141414;
-    font-size: 1.7rem;
-    font-weight: 800;
+    font-size: 1.3rem;
+    font-weight: 500;
     padding: 0.7px;
 
 }
